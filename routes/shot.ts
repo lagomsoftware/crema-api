@@ -13,6 +13,22 @@ export const shotRouter = router({
       },
     });
   }),
+  listCoffees: protectedProcedure.query(async ({ ctx }) => {
+    const shots = await db.shot.findMany({
+      where: {
+        userId: ctx.user.id,
+        coffee: {
+          not: null,
+        },
+      },
+      select: {
+        coffee: true,
+      },
+      distinct: "coffee",
+    });
+
+    return shots.map(({ coffee }) => coffee);
+  }),
   create: protectedProcedure
     .input(
       z.object({
