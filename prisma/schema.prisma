@@ -16,6 +16,8 @@ model Shot {
   yield     Float?
   dose      Float?
   notes     String?
+  coffee    String?
+  grindSetting Int?
   user      User?     @relation(fields: [userId], references: [id])
   userId    String?
   updatedAt DateTime? @updatedAt

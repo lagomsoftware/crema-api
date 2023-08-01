@@ -16,11 +16,13 @@ export const shotRouter = router({
   create: protectedProcedure
     .input(
       z.object({
+        grindSetting: z.number().optional(),
+        coffee: z.string().optional(),
         notes: z.string().optional(),
         duration: z.number(),
         yield: z.number(),
         dose: z.number(),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       return db.shot.create({
