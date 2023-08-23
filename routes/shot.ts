@@ -29,6 +29,24 @@ export const shotRouter = router({
 
     return shots.map(({ coffee }) => coffee);
   }),
+  listDoses: protectedProcedure.query(async ({ ctx }) => {
+    const shot = await db.shot.findFirst({
+      orderBy: {
+        createdAt: "desc",
+      },
+      where: {
+        userId: ctx.user.id,
+        dose: {
+          not: null,
+        },
+      },
+      select: {
+        dose: true,
+      },
+    });
+
+    return shot?.dose;
+  }),
   create: protectedProcedure
     .input(
       z.object({
