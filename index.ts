@@ -1,5 +1,6 @@
 import * as trpcExpress from "@trpc/server/adapters/express";
 import appRouter from "./routes";
+import bodyParser from "body-parser";
 import cors from "cors";
 import db from "./lib/prisma";
 import express from "express";
@@ -11,13 +12,15 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = express();
 
+app.use(bodyParser.json());
+
 app.use(
   "/trpc",
   trpcExpress.createExpressMiddleware({
     router: appRouter,
     middleware: cors(),
     createContext,
-  }),
+  })
 );
 
 app.post(
@@ -39,7 +42,7 @@ app.post(
     });
 
     res.json(eASignup);
-  },
+  }
 );
 
 app.listen(process.env.PORT ? +process.env.PORT : 1337);
