@@ -12,8 +12,6 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = express();
 
-app.use(bodyParser.json());
-
 app.use(
   "/trpc",
   trpcExpress.createExpressMiddleware({
@@ -25,6 +23,8 @@ app.use(
 
 app.post(
   "/waitlist",
+  cors(),
+  bodyParser.json(),
   async ({ body: { email } }: { body: { email?: string } }, res) => {
     if (!email || typeof email !== "string") {
       throw new TRPCError({ code: "UNAUTHORIZED" });
