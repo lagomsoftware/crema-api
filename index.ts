@@ -13,6 +13,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use(
   "/trpc",
@@ -25,7 +26,6 @@ app.use(
 
 app.post(
   "/waitlist",
-  cors(),
   async ({ body: { email } }: { body: { email?: string } }, res) => {
     if (!email || typeof email !== "string") {
       throw new TRPCError({ code: "UNAUTHORIZED" });
