@@ -11,17 +11,29 @@ datasource db {
 }
 
 model Shot {
-  id        String    @id @unique @default(cuid())
-  duration  Float?
-  yield     Float?
-  dose      Float?
-  notes     String?
-  coffee    String?
+  id           String    @id @unique @default(cuid())
+  duration     Float?
+  yield        Float?
+  dose         Float?
+  notes        String?
+  coffee       String?
   grindSetting Int?
+  bean         Bean?     @relation(fields: [beanId], references: [id])
+  user         User?     @relation(fields: [userId], references: [id])
+  userId       String?
+  updatedAt    DateTime? @updatedAt
+  createdAt    DateTime? @default(now())
+  beanId       String?
+}
+
+model Bean {
+  id        String    @id @unique @default(cuid())
+  name      String?
   user      User?     @relation(fields: [userId], references: [id])
   userId    String?
   updatedAt DateTime? @updatedAt
   createdAt DateTime? @default(now())
+  Shot      Shot[]
 }
 
 model User {
@@ -30,6 +42,14 @@ model User {
   name      String
   password  String
   shots     Shot[]
+  beans     Bean[]
+  updatedAt DateTime? @updatedAt
+  createdAt DateTime? @default(now())
+}
+
+model EASignup {
+  id        String    @id @unique @default(cuid())
+  email     String    @unique
   updatedAt DateTime? @updatedAt
   createdAt DateTime? @default(now())
 }

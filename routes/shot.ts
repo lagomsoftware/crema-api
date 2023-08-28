@@ -38,7 +38,7 @@ export const shotRouter = router({
         duration: z.number(),
         yield: z.number(),
         dose: z.number(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       return db.shot.create({
