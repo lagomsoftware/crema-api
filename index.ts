@@ -32,7 +32,7 @@ app.post(
 
     await resend.emails.send({
       to: email,
-      from: "<Crema> noreply@lagom.software",
+      from: "Crema <noreply@lagom.software>",
       subject: "You're on the Cream waitlist!",
       text: "You are now on the Crema waitlist! We'll get back to you when we are ready to start taking on beta testers :)",
       html: "<p>You are now on the <strong>Crema</strong> waitlist! We'll get back to you when we are ready to start taking on beta testers :)</p>",
