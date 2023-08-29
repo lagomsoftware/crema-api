@@ -8,39 +8,26 @@ export const shotRouter = router({
       where: {
         userId: ctx.user.id,
       },
+      include: {
+        bean: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
     });
   }),
-  listCoffees: protectedProcedure.query(async ({ ctx }) => {
-    const shots = await db.shot.findMany({
-      where: {
-        userId: ctx.user.id,
-        coffee: {
-          not: null,
-        },
-      },
-      select: {
-        coffee: true,
-      },
-      distinct: "coffee",
-    });
-
-    return shots.map(({ coffee }) => coffee);
-  }),
   create: protectedProcedure
     .input(
       z.object({
         grindSetting: z.number().optional(),
-        coffee: z.string().optional(),
+        beanId: z.string().optional(),
         notes: z.string().optional(),
         duration: z.number(),
         yield: z.number(),
         dose: z.number(),
-      }),
+      })
     )
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input: { beanId, ...input } }) => {
       return db.shot.create({
         data: {
           ...input,
@@ -49,6 +36,15 @@ export const shotRouter = router({
               id: ctx.user.id,
             },
           },
+          ...(beanId
+            ? {
+                bean: {
+                  connect: {
+                    id: beanId,
+                  },
+                },
+              }
+            : {}),
         },
       });
     }),

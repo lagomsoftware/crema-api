@@ -21,7 +21,7 @@ app.use(
     router: appRouter,
     middleware: cors(),
     createContext,
-  })
+  }),
 );
 
 app.post(
@@ -44,7 +44,7 @@ app.post(
     });
 
     res.json(eASignup);
-  }
+  },
 );
 
 app.listen(process.env.PORT ? +process.env.PORT : 1337);
