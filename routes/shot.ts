@@ -22,10 +22,12 @@ export const shotRouter = router({
         grindSetting: z.number().optional(),
         beanId: z.string().optional(),
         notes: z.string().optional(),
+        acidity: z.number(),
+        strength: z.number(),
         duration: z.number(),
         yield: z.number(),
         dose: z.number(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input: { beanId, ...input } }) => {
       return db.shot.create({

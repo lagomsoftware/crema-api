@@ -17,6 +17,8 @@ model Shot {
   dose         Float?
   notes        String?
   coffee       String?
+  acidity      Int?
+  strength     Int?
   grindSetting Int?
   bean         Bean?     @relation(fields: [beanId], references: [id])
   user         User?     @relation(fields: [userId], references: [id])
