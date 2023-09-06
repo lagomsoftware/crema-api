@@ -9,16 +9,16 @@ export const authRouter = router({
   signup: publicProcedure
     .input(
       z.object({
-        confirmPassword: z.string(),
-        email: z.string().email(),
-        password: z.string(),
-        name: z.string(),
-      }),
+        confirmPassword: z.string().min(1),
+        email: z.string().email().min(1),
+        password: z.string().min(1),
+        name: z.string().min(1),
+      })
     )
     .output(
       z.object({
         token: z.string(),
-      }),
+      })
     )
     .mutation(async ({ input: { confirmPassword, ...input } }) => {
       if (input.password !== confirmPassword) {
@@ -40,7 +40,7 @@ export const authRouter = router({
 
         const token = jwt.sign(
           { sub: user.id },
-          process.env.JWT_TOKEN as string,
+          process.env.JWT_TOKEN as string
         );
 
         return {
@@ -57,14 +57,14 @@ export const authRouter = router({
   login: publicProcedure
     .input(
       z.object({
-        email: z.string().email(),
-        password: z.string(),
-      }),
+        email: z.string().email().min(1),
+        password: z.string().min(1),
+      })
     )
     .output(
       z.object({
         token: z.string(),
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const user = await db.user.findUnique({
@@ -82,7 +82,7 @@ export const authRouter = router({
 
       const passwordsMatch = await bcrypt.compare(
         input.password,
-        user.password,
+        user.password
       );
 
       if (!passwordsMatch) {
